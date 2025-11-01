@@ -44,7 +44,7 @@ The application will start on port 8080 by default. You can override this by set
 ### Build Docker Image
 
 ```bash
-docker build -t hello-world-go:latest .
+docker build --platform linux/amd64 -t hello-world-go:latest .
 ```
 
 ### Run Docker Container
@@ -79,8 +79,10 @@ az acr create --resource-group myResourceGroup --name <ACR_NAME> --sku Basic
 # Login to ACR
 az acr login --name <ACR_NAME>
 
-# Tag and push the image
-docker tag hello-world-go:latest <ACR_NAME>.azurecr.io/hello-world-go:latest
+# Build with a ACR tag
+docker build --platform linux/amd64 -t <ACR_NAME>.azurecr.io/hello-world-go:latest .
+
+# Push the image
 docker push <ACR_NAME>.azurecr.io/hello-world-go:latest
 ```
 
@@ -147,4 +149,3 @@ ContainerLog
 | project TimeGenerated, LogEntry
 | order by TimeGenerated desc
 ```
-
