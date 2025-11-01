@@ -80,7 +80,9 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Log request end
 	duration := time.Since(startTime)
-	logger.Info("Health check completed",
+
+	// Test other log levels, verify they appear in the logs
+	logger.Warn("Health check completed",
 		zap.String("method", r.Method),
 		zap.String("path", r.URL.Path),
 		zap.Duration("duration", duration),
