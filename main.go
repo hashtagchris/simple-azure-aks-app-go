@@ -35,9 +35,10 @@ func main() {
 	)
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		logger.Fatal("Server failed to start",
+		logger.Error("Server failed to start",
 			zap.Error(err),
 		)
+		os.Exit(1)
 	}
 }
 
