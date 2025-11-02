@@ -1,0 +1,60 @@
+{
+  "location": "centralus",
+  "kind": "Direct",
+  "properties": {
+    "streamDeclarations": {
+      "Custom-MyFluentBitLogs": {
+        "columns": [
+          {
+            "name": "Time",
+            "type": "datetime"
+          },
+          {
+            "name": "level",
+            "type": "string"
+          },
+          {
+            "name": "caller",
+            "type": "string"
+          },
+          {
+            "name": "msg",
+            "type": "string"
+          },
+          {
+            "name": "method",
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "type": "dynamic"
+          }
+        ]
+      }
+    },
+    "destinations": {
+      "logAnalytics": [
+        {
+          "workspaceResourceId": "/subscriptions/21f320bb-0abe-407e-aba8-480d084c058c/resourceGroups/github-logging/providers/Microsoft.OperationalInsights/workspaces/azure-monitor-logs-test-1",
+          "name": "myworkspace"
+        }
+      ]
+    },
+    "dataFlows": [
+      {
+        "streams": [
+          "Custom-MyFluentBitLogs"
+        ],
+        "destinations": [
+          "myworkspace"
+        ],
+        "transformKql": "source | project TimeGenerated = Time, level, caller, msg, method, path, data",
+        "outputStream": "Custom-MyFluentBitLogs_CL"
+      }
+    ]
+  }
+}

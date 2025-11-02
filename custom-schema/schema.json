@@ -1,0 +1,32 @@
+{
+  "columns": [
+    {
+      "name": "ts",
+      "type": "datetime"
+    },
+    {
+      "name": "level",
+      "type": "string"
+    },
+    {
+      "name": "caller",
+      "type": "string"
+    },
+    {
+      "name": "msg",
+      "type": "string"
+    },
+    {
+      "name": "method",
+      "type": "string"
+    },
+    {
+      "name": "path",
+      "type": "string"
+    },
+    {
+      "name": "data",
+      "type": "dynamic"
+    }
+  ]
+}

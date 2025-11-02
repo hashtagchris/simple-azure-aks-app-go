@@ -1,0 +1,17 @@
+{"level":"info","ts":1762051969.1124496,"caller":"app/main.go:60","msg":"Request completed","method":"GET","path":"/favicon.ico","duration":0.000042223,"status":200}
+{"level":"warn","ts":1762051903.5924768,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000077177,"status":200}
+{"level":"info","ts":1762051903.5924008,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051898.6428523,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000044592,"status":200}
+{"level":"info","ts":1762051898.6428094,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051898.5923104,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000043446,"status":200}
+{"level":"info","ts":1762051898.5922685,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051896.5242262,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000038087,"status":200}
+{"level":"info","ts":1762051896.5241897,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051896.4756489,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.00004476,"status":200}
+{"level":"info","ts":1762051896.475606,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051893.6430197,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000042771,"status":200}
+{"level":"info","ts":1762051893.642978,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051893.5921032,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000046257,"status":200}
+{"level":"info","ts":1762051893.5920577,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
+{"level":"warn","ts":1762051888.6433804,"caller":"app/main.go:85","msg":"Health check completed","method":"GET","path":"/health","duration":0.000041723,"status":200}
+{"level":"info","ts":1762051888.64334,"caller":"app/main.go:72","msg":"Health check started","method":"GET","path":"/health"}
