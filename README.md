@@ -183,7 +183,34 @@ az monitor data-collection endpoint create \
   --public-network-access Enabled
 ```
 
-3. **Create a Service Principal:**
+3. **Create a Custom Table:**
+
+Tables must incude a `TimeGenerated` column.
+
+```
+az monitor log-analytics workspace table create \
+  --resource-group github-logging \
+  --workspace-name azure-monitor-logs-test-1 \
+  --name MyFluentBitLogs_CL \
+  --columns TimeGenerated=datetime level=string caller=string msg=string method=string path=string data=dynamic \
+  --retention-time 30
+```
+
+https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics/workspace/table?view=azure-cli-latest#az-monitor-log-analytics-workspace-table-create
+
+4. **Create a Data Collection Rule:**
+
+```
+az monitor data-collection rule create \
+  --resource-group github-logging \
+  --name dcr-for-fluentbit \
+  --location centralus \
+  --rule-file custom-schema/dcr.json
+```
+
+https://learn.microsoft.com/en-us/cli/azure/monitor/data-collection/rule?view=azure-cli-latest#az-monitor-data-collection-rule-create
+
+5. **Create a Service Principal:**
 
 ```bash
 az ad sp create-for-rbac --name fluent-bit-logger --role "Monitoring Metrics Publisher" --scopes /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/myResourceGroup
@@ -250,10 +277,10 @@ The Fluent Bit configuration includes:
 - **Inputs**:
   - `tail`: Reads container logs from `/var/log/containers/*.log`
   - `systemd`: Reads kubelet service logs
-  
+
 - **Filters**:
   - `kubernetes`: Enriches logs with Kubernetes metadata (pod name, namespace, labels, etc.)
-  
+
 - **Output**:
   - `azure_logs_ingestion`: Sends logs to Azure Monitor using the Logs Ingestion API
 
