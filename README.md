@@ -149,3 +149,116 @@ ContainerLog
 | project TimeGenerated, LogEntry
 | order by TimeGenerated desc
 ```
+
+## Fluent Bit Log Collection
+
+This repository includes Fluent Bit DaemonSet manifests for collecting and forwarding logs to Azure Monitor using the `azure_logs_ingestion` output plugin.
+
+### Prerequisites for Fluent Bit
+
+1. **Azure Log Analytics Workspace**: You need a Log Analytics workspace to receive the logs
+2. **Data Collection Endpoint (DCE)**: Create a DCE in your Azure subscription
+3. **Data Collection Rule (DCR)**: Create a DCR that defines how logs are ingested
+4. **Azure Service Principal**: Create a service principal with permissions to send logs
+   - Required permissions: `Monitoring Metrics Publisher` role on the DCR
+
+### Setting up Azure Resources
+
+1. **Create a Log Analytics workspace:**
+
+```bash
+az monitor log-analytics workspace create \
+  --resource-group myResourceGroup \
+  --workspace-name myLogAnalyticsWorkspace \
+  --location eastus
+```
+
+2. **Create a Data Collection Endpoint:**
+
+```bash
+az monitor data-collection endpoint create \
+  --name myDCE \
+  --resource-group myResourceGroup \
+  --location eastus \
+  --public-network-access Enabled
+```
+
+3. **Create a Service Principal:**
+
+```bash
+az ad sp create-for-rbac --name fluent-bit-logger --role "Monitoring Metrics Publisher" --scopes /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/myResourceGroup
+```
+
+Note the `appId` (client ID), `password` (client secret), and `tenant` (tenant ID) from the output.
+
+### Deploying Fluent Bit to AKS
+
+1. **Create the Azure credentials secret:**
+
+```bash
+kubectl create secret generic fluent-bit-azure-credentials \
+  --from-literal=client-id=<YOUR_CLIENT_ID> \
+  --from-literal=client-secret=<YOUR_CLIENT_SECRET> \
+  --from-literal=tenant-id=<YOUR_TENANT_ID> \
+  -n kube-system
+```
+
+2. **Edit the Azure configuration:**
+
+Edit `k8s/fluent-bit-azure-config.yaml` and update the following values:
+- `dce-url`: Your Data Collection Endpoint URL (e.g., `https://myDCE.eastus.ingest.monitor.azure.com`)
+- `dcr-id`: Your Data Collection Rule immutable ID (e.g., `dcr-abc123def456`)
+- `table-name`: The custom table name in Log Analytics (e.g., `CustomLog_CL`)
+
+3. **Deploy Fluent Bit:**
+
+```bash
+# Apply RBAC permissions
+kubectl apply -f k8s/fluent-bit-rbac.yaml
+
+# Apply configuration
+kubectl apply -f k8s/fluent-bit-configmap.yaml
+kubectl apply -f k8s/fluent-bit-azure-config.yaml
+
+# Deploy the DaemonSet
+kubectl apply -f k8s/fluent-bit-daemonset.yaml
+```
+
+4. **Verify Fluent Bit is running:**
+
+```bash
+kubectl get daemonset fluent-bit -n kube-system
+kubectl get pods -n kube-system -l app=fluent-bit
+kubectl logs -n kube-system -l app=fluent-bit --tail=50
+```
+
+### Viewing Logs in Azure
+
+Once Fluent Bit is running and configured, logs will be sent to your Log Analytics workspace. Query them using KQL:
+
+```kql
+CustomLog_CL
+| where TimeGenerated > ago(1h)
+| project TimeGenerated, Log, kubernetes_pod_name, kubernetes_namespace_name
+| order by TimeGenerated desc
+```
+
+### Fluent Bit Configuration
+
+The Fluent Bit configuration includes:
+
+- **Inputs**:
+  - `tail`: Reads container logs from `/var/log/containers/*.log`
+  - `systemd`: Reads kubelet service logs
+  
+- **Filters**:
+  - `kubernetes`: Enriches logs with Kubernetes metadata (pod name, namespace, labels, etc.)
+  
+- **Output**:
+  - `azure_logs_ingestion`: Sends logs to Azure Monitor using the Logs Ingestion API
+
+The configuration files are located in `k8s/`:
+- `fluent-bit-configmap.yaml`: Fluent Bit configuration and parsers
+- `fluent-bit-daemonset.yaml`: DaemonSet specification
+- `fluent-bit-rbac.yaml`: ServiceAccount and RBAC permissions
+- `fluent-bit-azure-config.yaml`: Azure-specific configuration (DCE, DCR, table name)
