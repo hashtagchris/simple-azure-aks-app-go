@@ -257,6 +257,9 @@ The Fluent Bit configuration includes:
 - **Output**:
   - `azure_logs_ingestion`: Sends logs to Azure Monitor using the Logs Ingestion API
 
+**Container Runtime Compatibility:**
+The DaemonSet is configured to work with both Docker and containerd container runtimes. It mounts `/var/log` and `/var/lib/docker/containers` to access container logs. Modern AKS clusters typically use containerd, which stores logs in `/var/log/pods` and creates symlinks in `/var/log/containers`.
+
 The configuration files are located in `k8s/`:
 - `fluent-bit-configmap.yaml`: Fluent Bit configuration and parsers
 - `fluent-bit-daemonset.yaml`: DaemonSet specification
