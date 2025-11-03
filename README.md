@@ -210,7 +210,11 @@ az monitor data-collection rule create \
 
 https://learn.microsoft.com/en-us/cli/azure/monitor/data-collection/rule?view=azure-cli-latest#az-monitor-data-collection-rule-create
 
-5. **Create a Service Principal:**
+5. **Configure the DCE for the new rule:**
+
+Find the new Data Collection Rule in the Azure Portal and click "Configure DCE" in the Overview section. Select the DCE created in step 2.
+
+6. **Create a Service Principal:**
 
 ```bash
 az ad sp create-for-rbac --name fluent-bit-logger --role "Monitoring Metrics Publisher" --scopes /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/myResourceGroup
