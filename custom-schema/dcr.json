@@ -6,7 +6,7 @@
       "Custom-MyFluentBitLogs": {
         "columns": [
           {
-            "name": "Time",
+            "name": "timestamp",
             "type": "datetime"
           },
           {
@@ -52,7 +52,7 @@
         "destinations": [
           "myworkspace"
         ],
-        "transformKql": "source | project TimeGenerated = Time, level, caller, msg, method, path, data",
+        "transformKql": "source | project TimeGenerated = timestamp, level, caller, msg, method, path, data",
         "outputStream": "Custom-MyFluentBitLogs_CL"
       }
     ]

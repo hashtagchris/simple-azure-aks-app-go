@@ -1,7 +1,7 @@
 {
   "columns": [
     {
-      "name": "ts",
+      "name": "timestamp",
       "type": "datetime"
     },
     {

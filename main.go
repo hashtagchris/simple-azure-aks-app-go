@@ -7,18 +7,23 @@ import (
 	"time"
 
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var logger *zap.Logger
 
 func main() {
+	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg.TimeKey = "timestamp"
+	// ISO 8601 is supported by Azure Monitor Logs: https://learn.microsoft.com/en-us/kusto/query/scalar-data-types/datetime?view=azure-monitor#supported-formats
+	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
+
 	// Initialize the logger
-	var err error
-	logger, err = zap.NewProduction()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to initialize logger: %v\n", err)
-		os.Exit(1)
-	}
+	logger = zap.New(zapcore.NewCore(
+		zapcore.NewJSONEncoder(encoderCfg),
+		zapcore.Lock(os.Stdout),
+		zapcore.InfoLevel,
+	))
 	defer logger.Sync()
 
 	// Set up HTTP handlers

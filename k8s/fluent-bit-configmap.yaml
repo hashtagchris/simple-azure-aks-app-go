@@ -53,7 +53,7 @@ data:
         dce_url ${AZURE_DCE_URL}
         dcr_id ${AZURE_DCR_ID}
         table_name ${AZURE_TABLE_NAME}
-        time_key TimeGenerated
+        time_key timestamp
 
   parsers.conf: |
     [PARSER]
