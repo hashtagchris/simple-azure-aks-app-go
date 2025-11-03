@@ -36,10 +36,13 @@ func main() {
 	}
 
 	logger.Info("Starting server",
-		zap.String("port", port),
+		zap.Any("data", map[string]any{
+			"port": port,
+		}),
 	)
 
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		// TODO: What fields are errors associated with? Should we add an error column to the custom table schema?
 		logger.Error("Server failed to start",
 			zap.Error(err),
 		)
@@ -54,7 +57,10 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Request started",
 		zap.String("method", r.Method),
 		zap.String("path", r.URL.Path),
-		zap.String("remote_addr", r.RemoteAddr),
+		zap.Any("data", map[string]any{
+			"remote_addr": r.RemoteAddr,
+			"user_agent": r.UserAgent(),
+		}),
 	)
 
 	// Handle the request
@@ -65,8 +71,10 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	logger.Info("Request completed",
 		zap.String("method", r.Method),
 		zap.String("path", r.URL.Path),
-		zap.Duration("duration", duration),
-		zap.Int("status", http.StatusOK),
+		zap.Any("data", map[string]any{
+			"duration_ms": duration.Milliseconds(),
+			"status":      http.StatusOK,
+		}),
 	)
 }
 
@@ -90,7 +98,9 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 	logger.Warn("Health check completed",
 		zap.String("method", r.Method),
 		zap.String("path", r.URL.Path),
-		zap.Duration("duration", duration),
-		zap.Int("status", http.StatusOK),
+		zap.Any("data", map[string]any{
+			"duration_ms": duration.Milliseconds(),
+			"status":      http.StatusOK,
+		}),
 	)
 }
