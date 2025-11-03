@@ -8,11 +8,11 @@ metadata:
 data:
   # Replace these values with your Azure Monitor configuration
   # Data Collection Endpoint URL
-  dce-url: "https://<DCE-NAME>.<REGION>.ingest.monitor.azure.com"
+  dce-url: "https://dce-for-fluent-bit-3fw9.centralus-1.ingest.monitor.azure.com"
   # Data Collection Rule immutable ID
-  dcr-id: "dcr-<GUID>"
+  dcr-id: "dcr-db234b9ff2624bae94be4ceba71737e9"
   # Custom table name in Log Analytics workspace
-  table-name: "CustomLog_CL"
+  table-name: "MyFluentBitLogs_CL"
 ---
 # Example Secret for Azure Service Principal credentials
 # This is a template - DO NOT commit actual credentials to source control
