@@ -224,7 +224,27 @@ Note the `appId` (client ID), `password` (client secret), and `tenant` (tenant I
 
 ### Deploying Fluent Bit to AKS
 
-1. **Create the Azure credentials secret:**
+1. **Edit the Azure configuration:**
+
+Edit `k8s/fluent-bit-azure-config.yaml` and update the following values:
+- `dce-url`: Your Data Collection Endpoint URL (e.g., `https://myDCE.eastus.ingest.monitor.azure.com`)
+- `dcr-id`: Your Data Collection Rule immutable ID (e.g., `dcr-abc123def456`)
+- `table-name`: The custom table name in Log Analytics (e.g., `CustomLog_CL`)
+
+2. **Apply Fluent Bit config:**
+
+```bash
+# Apply RBAC permissions
+kubectl apply -f k8s/fluent-bit-rbac.yaml
+
+# Apply configuration
+kubectl apply -f k8s/fluent-bit-configmap.yaml
+kubectl apply -f k8s/fluent-bit-azure-config.yaml
+```
+
+3. **Create the Azure credentials secret:**
+
+Override any secret possibly created by `k8s/fluent-bit-azure-config.yaml`.
 
 ```bash
 kubectl create secret generic fluent-bit-azure-credentials \
@@ -234,28 +254,14 @@ kubectl create secret generic fluent-bit-azure-credentials \
   -n kube-system
 ```
 
-2. **Edit the Azure configuration:**
-
-Edit `k8s/fluent-bit-azure-config.yaml` and update the following values:
-- `dce-url`: Your Data Collection Endpoint URL (e.g., `https://myDCE.eastus.ingest.monitor.azure.com`)
-- `dcr-id`: Your Data Collection Rule immutable ID (e.g., `dcr-abc123def456`)
-- `table-name`: The custom table name in Log Analytics (e.g., `CustomLog_CL`)
-
-3. **Deploy Fluent Bit:**
+4. **Deploy Fluent Bit:**
 
 ```bash
-# Apply RBAC permissions
-kubectl apply -f k8s/fluent-bit-rbac.yaml
-
-# Apply configuration
-kubectl apply -f k8s/fluent-bit-configmap.yaml
-kubectl apply -f k8s/fluent-bit-azure-config.yaml
-
 # Deploy the DaemonSet
 kubectl apply -f k8s/fluent-bit-daemonset.yaml
 ```
 
-4. **Verify Fluent Bit is running:**
+5. **Verify Fluent Bit is running:**
 
 ```bash
 kubectl get daemonset fluent-bit -n kube-system

@@ -13,24 +13,3 @@ data:
   dcr-id: "dcr-db234b9ff2624bae94be4ceba71737e9"
   # Custom table name in Log Analytics workspace
   table-name: "MyFluentBitLogs_CL"
----
-# Example Secret for Azure Service Principal credentials
-# This is a template - DO NOT commit actual credentials to source control
-# Create this secret using kubectl:
-# kubectl create secret generic fluent-bit-azure-credentials \
-#   --from-literal=client-id=<YOUR_CLIENT_ID> \
-#   --from-literal=client-secret=<YOUR_CLIENT_SECRET> \
-#   --from-literal=tenant-id=<YOUR_TENANT_ID> \
-#   -n kube-system
-apiVersion: v1
-kind: Secret
-metadata:
-  name: fluent-bit-azure-credentials
-  namespace: kube-system
-  labels:
-    app: fluent-bit
-type: Opaque
-stringData:
-  client-id: "<AZURE_CLIENT_ID>"
-  client-secret: "<AZURE_CLIENT_SECRET>"
-  tenant-id: "<AZURE_TENANT_ID>"
