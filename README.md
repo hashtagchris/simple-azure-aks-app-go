@@ -208,6 +208,10 @@ az monitor data-collection rule create \
   --rule-file custom-schema/dcr.json
 ```
 
+https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/data-collection-rule-samples?source=recommendations#logs-ingestion-api
+
+https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/data-collection-rule-structure
+
 https://learn.microsoft.com/en-us/cli/azure/monitor/data-collection/rule?view=azure-cli-latest#az-monitor-data-collection-rule-create
 
 5. **Configure the DCE for the new rule:**

@@ -12,4 +12,4 @@ data:
   # Data Collection Rule immutable ID
   dcr-id: "dcr-db234b9ff2624bae94be4ceba71737e9"
   # Custom table name in Log Analytics workspace
-  table-name: "MyFluentBitLogs_CL"
+  table-name: "MyFluentBitLogs"
