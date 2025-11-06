@@ -61,10 +61,7 @@ data:
         account_name ${AZURE_STORAGE_ACCOUNT}
         shared_key ${AZURE_STORAGE_KEY}
         container_name ${AZURE_BLOB_CONTAINER}
-        blob_name logs/%Y/%m/%d/%H/%M/logs.json
-        format json_lines
-        total_file_size 50M
-        upload_timeout 10m
+        path /logs/kubernetes
 
   parsers.conf: |
     [PARSER]

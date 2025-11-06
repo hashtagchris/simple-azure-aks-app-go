@@ -2,6 +2,8 @@
 
 ## 1. Create Azure Storage Account
 
+The storage account name has to be between 3-24 characters, 0-9a-z.
+
 ```bash
 # Set variables
 RESOURCE_GROUP="github-logging"
@@ -64,5 +66,8 @@ data:
 ```bash
 kubectl apply -f k8s/fluent-bit-azure-blob-config.yaml
 kubectl apply -f k8s/fluent-bit-configmap.yaml
+kubectl apply -f k8s/fluent-bit-daemonset.yaml
 kubectl rollout restart daemonset/fluent-bit -n kube-system
+sleep 5
+kubectl logs -n kube-system -l app=fluent-bit --tail=50
 ```
