@@ -75,6 +75,24 @@ spec:
               name: fluent-bit-azure-config
               key: table-name
               optional: true
+        - name: AZURE_STORAGE_ACCOUNT
+          valueFrom:
+            configMapKeyRef:
+              name: fluent-bit-azure-blob-config
+              key: storage-account
+              optional: true
+        - name: AZURE_BLOB_CONTAINER
+          valueFrom:
+            configMapKeyRef:
+              name: fluent-bit-azure-blob-config
+              key: blob-container
+              optional: true
+        - name: AZURE_STORAGE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fluent-bit-azure-blob-credentials
+              key: storage-key
+              optional: true
         resources:
           requests:
             cpu: 100m

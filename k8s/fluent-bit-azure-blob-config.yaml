@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit-azure-blob-config
+  namespace: kube-system
+  labels:
+    app: fluent-bit
+data:
+  # Azure Storage Account name for blob storage
+  storage-account: "01-h10sgithublogs"
+  # Blob container name for log storage
+  blob-container: "logs"
