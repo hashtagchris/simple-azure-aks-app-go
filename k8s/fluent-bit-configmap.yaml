@@ -61,7 +61,8 @@ data:
         account_name ${AZURE_STORAGE_ACCOUNT}
         shared_key ${AZURE_STORAGE_KEY}
         container_name ${AZURE_BLOB_CONTAINER}
-        path /logs/kubernetes
+        path logs/kubernetes
+        tls on
 
   parsers.conf: |
     [PARSER]
