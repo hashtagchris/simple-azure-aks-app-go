@@ -58,7 +58,6 @@ Update the `fluent-bit-azure-blob-config.yaml` file with your actual storage acc
 ```yaml
 data:
   storage-account: "01h10sgithublogs"
-  blob-container: "logs"
 ```
 
 ## 6. Apply Configuration

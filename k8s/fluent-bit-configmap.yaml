@@ -60,8 +60,8 @@ data:
         Match *
         account_name ${AZURE_STORAGE_ACCOUNT}
         shared_key ${AZURE_STORAGE_KEY}
-        container_name ${AZURE_BLOB_CONTAINER}
-        path logs/kubernetes
+        container_name "$TAG[4]"
+        path logs
         tls on
 
   parsers.conf: |

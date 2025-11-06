@@ -8,5 +8,3 @@ metadata:
 data:
   # Azure Storage Account name for blob storage
   storage-account: "01h10sgithublogs"
-  # Blob container name for log storage
-  blob-container: "logs"
