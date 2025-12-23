@@ -104,7 +104,7 @@
         "destinations": [
           "myworkspace"
         ],
-        "transformKql": "source | project TimeGenerated = timestamp - 30d, level, caller, msg, method, path, data",
+        "transformKql": "source | project TimeGenerated = todatetime(timestamp) - 30d, level, caller, msg, method, path, data",
         "outputStream": "Custom-TimeShifted_CL"
       },
       {

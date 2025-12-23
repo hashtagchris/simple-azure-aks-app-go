@@ -237,6 +237,8 @@ az monitor data-collection rule create \
   --rule-file custom-schema/dcr.json
 ```
 
+You can optionally add `--data-collection-endpoint-id` to the end if you've created the DCE already. Use `az monitor data-collection endpoint list --resource-group github-logging | jq '.[].id'` to figure out the id.
+
 https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/data-collection-rule-samples?source=recommendations#logs-ingestion-api
 
 https://learn.microsoft.com/en-us/azure/azure-monitor/data-collection/data-collection-rule-structure
