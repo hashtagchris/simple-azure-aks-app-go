@@ -14,16 +14,22 @@ var logger *zap.Logger
 
 func main() {
 	encoderCfg := zap.NewProductionEncoderConfig()
-	encoderCfg.TimeKey = "timestamp"
+	// FYI, the Fluent Bit output plugin has a time_key setting
+	encoderCfg.TimeKey = "real_timestamp"
 	// ISO 8601 is supported by Azure Monitor Logs: https://learn.microsoft.com/en-us/kusto/query/scalar-data-types/datetime?view=azure-monitor#supported-formats
 	encoderCfg.EncodeTime = zapcore.ISO8601TimeEncoder
 
-	// Initialize the logger
-	logger = zap.New(zapcore.NewCore(
+	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderCfg),
 		zapcore.Lock(os.Stdout),
 		zapcore.InfoLevel,
-	))
+	).With([]zap.Field{
+		// "The TimeGenerated value cannot be older than 2 days before received time or more than a day in the future."
+		zap.Time("timestamp", time.Now().Add(-47*time.Hour)),
+	})
+
+	// Initialize the logger
+	logger = zap.New(core)
 	defer logger.Sync()
 
 	// Set up HTTP handlers
@@ -101,6 +107,7 @@ func healthHandler(w http.ResponseWriter, r *http.Request) {
 		zap.Any("data", map[string]any{
 			"duration_ms": duration.Milliseconds(),
 			"status":      http.StatusOK,
+			"actual_time":  time.Now().Format(time.RFC3339),
 		}),
 	)
 }
