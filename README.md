@@ -183,9 +183,11 @@ az monitor data-collection endpoint create \
   --public-network-access Enabled
 ```
 
-3. **Create a Custom Table:**
+3. **Create Custom Tables:**
 
 Tables must incude a `TimeGenerated` column.
+
+#### Primary custom table
 
 ```
 az monitor log-analytics workspace table create \
@@ -193,7 +195,34 @@ az monitor log-analytics workspace table create \
   --workspace-name azure-monitor-logs-test-1 \
   --name MyFluentBitLogs_CL \
   --columns TimeGenerated=datetime level=string caller=string msg=string method=string path=string data=dynamic \
-  --retention-time 30
+  --total-retention-time 730
+```
+
+#### Short retention time
+
+For testing long-term retention and search jobs a few days after population
+
+```
+az monitor log-analytics workspace table create \
+  --resource-group github-logging \
+  --workspace-name azure-monitor-logs-test-1 \
+  --name ShortRetentionTime_CL \
+  --columns TimeGenerated=datetime level=string caller=string msg=string method=string path=string data=dynamic \
+  --retention-time 4 \
+  --total-retention-time 730
+```
+
+#### A table with artifically old TimeGenerated values
+
+For immediately testing long-term retention and search jobs after population
+
+```
+az monitor log-analytics workspace table create \
+  --resource-group github-logging \
+  --workspace-name azure-monitor-logs-test-1 \
+  --name TimeShifted_CL \
+  --columns TimeGenerated=datetime level=string caller=string msg=string method=string path=string data=dynamic \
+  --total-retention-time 730
 ```
 
 https://learn.microsoft.com/en-us/cli/azure/monitor/log-analytics/workspace/table?view=azure-cli-latest#az-monitor-log-analytics-workspace-table-create

@@ -34,6 +34,38 @@
             "type": "dynamic"
           }
         ]
+      },
+      "Custom-MyFluentBitLogs2": {
+        "columns": [
+          {
+            "name": "timestamp",
+            "type": "datetime"
+          },
+          {
+            "name": "level",
+            "type": "string"
+          },
+          {
+            "name": "caller",
+            "type": "string"
+          },
+          {
+            "name": "msg",
+            "type": "string"
+          },
+          {
+            "name": "method",
+            "type": "string"
+          },
+          {
+            "name": "path",
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "type": "dynamic"
+          }
+        ]
       }
     },
     "destinations": {
@@ -54,6 +86,36 @@
         ],
         "transformKql": "source | project TimeGenerated = timestamp, level, caller, msg, method, path, data",
         "outputStream": "Custom-MyFluentBitLogs_CL"
+      },
+      {
+        "streams": [
+          "Custom-MyFluentBitLogs"
+        ],
+        "destinations": [
+          "myworkspace"
+        ],
+        "transformKql": "source | project TimeGenerated = timestamp, level, caller, msg, method, path, data",
+        "outputStream": "Custom-ShortRetentionTime_CL"
+      },
+            {
+        "streams": [
+          "Custom-MyFluentBitLogs"
+        ],
+        "destinations": [
+          "myworkspace"
+        ],
+        "transformKql": "source | project TimeGenerated = timestamp - 30d, level, caller, msg, method, path, data",
+        "outputStream": "Custom-TimeShifted_CL"
+      },
+      {
+        "streams": [
+          "Custom-MyFluentBitLogs2"
+        ],
+        "destinations": [
+          "myworkspace"
+        ],
+        "transformKql": "source | project TimeGenerated = timestamp, level, caller, msg, method, path, data",
+        "outputStream": "Custom-MyFluentBitLogs2_CL"
       }
     ]
   }
