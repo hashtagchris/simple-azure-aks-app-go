@@ -222,6 +222,7 @@ az monitor log-analytics workspace table create \
   --workspace-name azure-monitor-logs-test-1 \
   --name TimeShifted_CL \
   --columns TimeGenerated=datetime level=string caller=string msg=string method=string path=string data=dynamic \
+  --retention-time 4 \
   --total-retention-time 730
 ```
 
