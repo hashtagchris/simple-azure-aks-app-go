@@ -55,6 +55,15 @@ data:
         table_name ${AZURE_TABLE_NAME}
         time_key timestamp
 
+    [OUTPUT]
+        Name azure_blob
+        Match *
+        account_name ${AZURE_STORAGE_ACCOUNT}
+        shared_key ${AZURE_STORAGE_KEY}
+        container_name "$TAG[4]"
+        path logs
+        tls on
+
   parsers.conf: |
     [PARSER]
         Name   apache

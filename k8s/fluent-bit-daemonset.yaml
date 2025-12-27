@@ -32,7 +32,7 @@ spec:
         effect: "NoSchedule"
       containers:
       - name: fluent-bit
-        image: fluent/fluent-bit:3.1.9
+        image: ghlogging.azurecr.io/fluent-bit:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -75,6 +75,17 @@ spec:
               name: fluent-bit-azure-config
               key: table-name
               optional: true
+        - name: AZURE_STORAGE_ACCOUNT
+          valueFrom:
+            configMapKeyRef:
+              name: fluent-bit-azure-blob-config
+              key: storage-account
+              optional: true
+        - name: AZURE_STORAGE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fluent-bit-azure-blob-credentials
+              key: storage-key
         resources:
           requests:
             cpu: 100m
